@@ -17,18 +17,6 @@ let units_info = {
     merc_cost: 1,
     skills: {},
   },
-  archer: {
-    name: "Archer",
-    player: true,
-    hp: 10,
-    attack: 20,
-    crit: 0.8,
-    order: 5,
-	  tier: 1,
-    cost: 0,
-    merc_cost: 4,
-    skills: { reach: true },
-  },
   recruit: {
     name: "Recruit",
     player: true,
@@ -40,6 +28,30 @@ let units_info = {
     cost: 1,
     merc_cost: 8,
     skills: {},
+  },
+  knight: {
+    name: "Knight",
+    player: true,
+    hp: 90,
+    attack: 20,
+    crit: 0.8,
+    order: 2,
+    tier: 3,
+    cost: 4,
+    merc_cost: 64,
+    skills: {},
+  },
+  horse2: {
+    name: "Cuirassier",
+    player: true,
+    hp: 120,
+    attack: 10,
+    crit: 0.8,
+    order: 3,
+    tier: 4,
+    cost: 5,
+    merc_cost: 128, // Not sure
+    skills: { first: true },
   },
   cavalry: {
     name: "Cavalry",
@@ -53,6 +65,18 @@ let units_info = {
     merc_cost: 16,
     skills: { flanking: true, first: true },
   },
+  archer: {
+    name: "Archer",
+    player: true,
+    hp: 10,
+    attack: 20,
+    crit: 0.8,
+    order: 5,
+	  tier: 1,
+    cost: 0,
+    merc_cost: 4,
+    skills: { reach: true },
+  },
   longbow: {
     name: "Longbow Archer",
     player: true,
@@ -65,18 +89,6 @@ let units_info = {
     merc_cost: 32,
     skills: { reach: true, double: true },
   },
-  knight: {
-    name: "Knight",
-    player: true,
-    hp: 90,
-    attack: 20,
-    crit: 0.8,
-    order: 2,
-	  tier: 3,
-    cost: 4,
-    merc_cost: 64,
-    skills: {},
-  },
   crossbow: {
     name: "Crossbowman",
     player: true,
@@ -88,18 +100,6 @@ let units_info = {
     cost: 4,
     merc_cost: 64,
     skills: { reach: true },
-  },
-  horse2: {
-    name: "Cuirassier",
-    player: true,
-    hp: 120,
-    attack: 10,
-    crit: 0.8,
-    order: 3,
-	  tier: 4,
-    cost: 5,
-    merc_cost: 128, // Not sure
-    skills: { first: true },
   },
   cannon: {
     name: "Cannoneer",
@@ -122,6 +122,33 @@ let units_info = {
 	  tier: 1,
     skills: {},
   },
+  raider: {
+    name: "Orc Raiders",
+    hp: 40,
+    attack: 15,
+    crit: 0.6,
+    order: 1,
+	  tier: 1,
+    skills: {},
+  },
+  warg: {
+    name: "Warg Rider",
+    hp: 5,
+    attack: 5,
+    crit: 0.6,
+    order: 4,
+    tier: 2,
+    skills: { flanking: true, first: true },
+  },
+  vanguard: {
+    name: "Orc Vanguard",
+    hp: 120,
+    attack: 10,
+    crit: 0.6,
+    order: 3,
+    tier: 4,
+    skills: { first: true },
+  },
   hunter: {
     name: "Orc Hunter",
     hp: 10,
@@ -131,13 +158,13 @@ let units_info = {
 	  tier: 1,
     skills: { reach: true },
   },
-  raider: {
-    name: "Orc Raiders",
-    hp: 40,
-    attack: 15,
+  veteran: {
+    name: "Orc Veteran",
+    hp: 90,
+    attack: 20,
     crit: 0.6,
-    order: 1,
-	  tier: 1,
+    order: 2,
+    tier: 3,
     skills: {},
   },
   elitehunter: {
@@ -149,15 +176,6 @@ let units_info = {
 	  tier: 2,
     skills: { reach: true, double: true },
   },
-  veteran: {
-    name: "Orc Veteran",
-    hp: 90,
-    attack: 20,
-    crit: 0.6,
-    order: 2,
-	  tier: 3,
-    skills: {},
-  },
   sniper: {
     name: "Elite Orc Sniper",
     hp: 15,
@@ -166,24 +184,6 @@ let units_info = {
     order: 7,
 	  tier: 3,
     skills: { reach: true },
-  },
-  warg: {
-    name: "Warg Rider",
-    hp: 5,
-    attack: 5,
-    crit: 0.6,
-    order: 4,
-	  tier: 2,
-    skills: { flanking: true, first: true },
-  },
-  vanguard: {
-    name: "Orc Vanguard",
-    hp: 120,
-    attack: 10,
-    crit: 0.6,
-    order: 3,
-	  tier: 4,
-    skills: { first: true },
   },
   demolisher: {
     name: "Orc Demolisher",
@@ -290,7 +290,7 @@ const critical = (chance, deterministic_crits) => {
       return true;
     if (chance === 0)
       return false;
-    
+
     crit_counter++;
     return shuffle(crit_counter%10, 9) < chance * 10
   }
@@ -529,21 +529,21 @@ const calc_metric = (metrics, forces_mine, units_mine, forces_theirs, units_thei
     // Calculate losses
     let loss_m = { ...forces_mine };
     units_mine.forEach((u) => loss_m[u.type]--);
-    
+
     // Valuate losses according to metric
     Object.keys(loss_m).forEach((u) => result += loss_m[u] * metric_loss_value(u, metrics));
-    
+
     result *= -1; // We want the lowest losses!
   }
   else if (metrics.goal === GOAL_KILLS) {
     // Calculate kills
     let loss_t = { ...forces_theirs };
     units_theirs.forEach((u) => loss_t[u.type]--);
-    
+
     // Valuate kills according to metric
     Object.keys(loss_t).forEach((u) => result += loss_t[u] * metric_kill_value(u, metrics));
   }
-  
+
   return result;
 }
 
@@ -573,7 +573,7 @@ const get_metrics_for_army = (army_mine, forces_theirs, metrics) => {
   if (crit_theirs != null)
     units_theirs.forEach((o) => o.crit = crit_theirs);
   [units_mine, units_theirs] = resolve_combat(units_mine, units_theirs, true);
-  
+
   let step_result = {
     army: army_mine,
     win: units_theirs.length === 0,
@@ -581,18 +581,18 @@ const get_metrics_for_army = (army_mine, forces_theirs, metrics) => {
     good_result: false,
     exit_early: false,
   }
-  
+
   // All goals except kills need to win. No casualties additionally needs no casualties.
   step_result.good_result = step_result.win || (metrics.goal === GOAL_KILLS);
   if (metrics.goal === GOAL_NO_CASUALTIES)
     step_result.good_result = step_result.win && (units_mine.length === troop_count);
-  
+
   // For the simple optimizer, we are interested only in battle duration, so we want to exit after the first good result
   if (metrics.goal <= GOAL_NO_CASUALTIES)
     step_result.exit_early = step_result.good_result;
   else
     step_result.metric = calc_metric(metrics, army_mine, units_mine, forces_theirs, units_theirs);
-  
+
   return step_result;
 }
 
@@ -603,11 +603,11 @@ var optimization_cancelled = false; // Global
 const act_on_armies_of_tier_sum = (forces, unit_types, index, current_army, current_tiersum, target_tiersum, func) => {
   if (optimization_cancelled)
     return null;
-  
+
   //console.log(`Start: index ${index}, current ${current_tiersum}, target ${target_tiersum}`);
   let next_army = { ...current_army };
   let current_unit_count = Object.keys(current_army).reduce((p, c) => p + current_army[c], 0);
-  
+
   // Not the last unit: keep adding more units, and try to fill the rest of the tier sum up with the remaining units
   if (index < unit_types.length - 1) {
     let best_result = null;
@@ -703,7 +703,7 @@ const optimize_for_tiersum = (tiersum, max_tiersum, fixed_args, best_result) => 
   // This will only return good results or null, so we don't have to worry about this being a bad one
   result = act_on_armies_of_tier_sum(fixed_args.forces_mine, fixed_args.available_types, 0, {}, 0, tiersum, fixed_args.func);
   let done = false;
-  
+
   if (result == null && (tiersum == max_tiersum || optimization_cancelled)) { // No result and done
     if (fixed_args.advanced) {
       document.getElementById("adv_progress_bar_outer").style.display = "none";
@@ -718,7 +718,7 @@ const optimize_for_tiersum = (tiersum, max_tiersum, fixed_args, best_result) => 
     return; // Get out
   } else {
     done = (tiersum === max_tiersum || (result != null && result.exit_early) || optimization_cancelled);
-    
+
     // We might have to update our best result
     if (result != null) {
       if (result.exit_early) {
@@ -730,7 +730,7 @@ const optimize_for_tiersum = (tiersum, max_tiersum, fixed_args, best_result) => 
       }
     }
   }
-  
+
   // Either done (with a result), or we have to keep going
   if (done) {
     let btime = format_seconds(battle_time(best_result.army, fixed_args.forces_theirs, false));
@@ -766,16 +766,16 @@ const optimize = (forces_mine, forces_theirs, metrics) => {
   Object.keys(forces_mine).forEach((k) => {if(forces_mine[k] > 0) available_types.push(k);});
   if (available_types.length == 0)
     return;
-  
+
   let max_tiersum = calc_max_tiersum(forces_mine, available_types);
-  
+
   let fixed_args = {};
   fixed_args.forces_mine = forces_mine;
   fixed_args.forces_theirs = forces_theirs;
   fixed_args.available_types = available_types;
   fixed_args.func = (army) => get_metrics_for_army(army, forces_theirs, metrics);
   fixed_args.advanced = (metrics.goal === GOAL_KILLS || metrics.goal === GOAL_LOSSES);
-  
+
   // Loop over tier sum
   optimization_cancelled = false;
   if (fixed_args.advanced) {
@@ -849,10 +849,10 @@ const optbutton = (goal) => {
       else enemy_forces[k] = c;
     }
   });
-  
+
   metrics = {goal: goal};
   metrics.loss_value_type = LV_TIER;
   metrics.kill_value_type = KV_TIER;
-  
+
   optimize(player_forces, enemy_forces, metrics);
 };
