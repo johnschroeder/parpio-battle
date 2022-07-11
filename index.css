@@ -1,9 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Sriracha&display=swap');
+
+body {
+  font-family: 'Sriracha', cursive;
+  background-color: burlywood;
+  font-weight: bold;
+}
+
+h1 {
+  margin:0em;
+}
+
 #town {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  
+  align-items:baseline;
+  justify-content: center;
+  border: 2px solid saddlebrown;
+  background-color: #fff;
+  border-radius: 1em;
+  padding:1em;
+  margin: 1em;
+}
+
+.unitList {
+  margin: 1em;
 }
 
 .unitEntry {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+}
+
+
+.unitEntry input {
+    width: 60px;
+    height: 25px;
+    line-height: 30px;
+    border-radius: 0.25em;
+    border:0px;
+    color: #fff;
+    text-align: center;
+    background: saddlebrown;
+    margin: 0.25em 1em 0em 1em;
+    font-family: 'Sriracha', cursive;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.unitEntry input:focus {
+  background: burlywood;
+  color: black;
+}
+
+#battle {
+  border: 2px solid saddlebrown;
+  background-color: #fff;
+  border-radius: 1em;
+  padding:1em;
+  margin: 1em;
+  text-align: center;
+}
+
+.hidden {
+  display:none;
+}
+
+button {
+  display: inline-block;
+  font-family: 'Sriracha', cursive;
+  border: none;
+  padding: 0rem 2rem;
+  border-radius: 0.2em;
+  border: 3px solid darkred;
+  margin: 0.5em;
+  text-decoration: none;
+  background: #b00b0b;
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 250ms ease-in-out, 
+              transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button:hover,
+button:focus {
+  background: red;
+  transform: scale(1);
+}
+
+button:focus {
+  outline: 1px solid #fff;
+  outline-offset: -4px;
+  transform: scale(1);
+}
+
+button:active {
+  transform: scale(0.8);
 }

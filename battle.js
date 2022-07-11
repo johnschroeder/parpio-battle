@@ -35,16 +35,6 @@ let units_info = {
 	tier: 1,
     skills: {},
   },
-  cavalry: {
-    name: "Cavalry",
-    player: true,
-    hp: 5,
-    attack: 5,
-    crit: 0.8,
-    order: 4,
-	tier: 2,
-    skills: { flanking: true, first: true },
-  },
   longbow: {
     name: "Longbow Archer",
     player: true,
@@ -74,6 +64,16 @@ let units_info = {
     order: 7,
 	tier: 3,
     skills: { reach: true },
+  },
+  cavalry: {
+    name: "Cavalry",
+    player: true,
+    hp: 5,
+    attack: 5,
+    crit: 0.8,
+    order: 4,
+	tier: 2,
+    skills: { flanking: true, first: true },
   },
   horse2: {
     name: "Cuirassier",
@@ -431,8 +431,17 @@ window.onload = () => {
   let enemy_div = document.createElement("div");
   enemy_div.className = "unitList";
 
-  town.appendChild(enemy_div);
+  let player_div_heading = document.createElement("h1");
+  player_div_heading.textContent = "Player units";
+  player_div.appendChild(player_div_heading);
+
+  let enemy_div_heading = document.createElement("h1");
+  enemy_div_heading.textContent = "Enemy units";
+  enemy_div.appendChild(enemy_div_heading);
+
   town.appendChild(player_div);
+  
+  town.appendChild(enemy_div);
   Object.keys(units_info).forEach((k) => {
     let div = document.createElement("div");
     div.className = "unitEntry";
@@ -441,14 +450,19 @@ window.onload = () => {
     let ip = document.createElement("input");
     ip.type = "number";
     ip.value = 0;
-    div.appendChild(sp);
+    ip.addEventListener("click", selectMe);
     div.appendChild(ip);
+    div.appendChild(sp);
     if (units_info[k].player) player_div.appendChild(div);
     else enemy_div.appendChild(div);
     ui_lookup[k] = ip;
   });
   // doBattle(forces_mine, forces_theirs, 1000);
 };
+
+function selectMe(event) {
+  this.select();
+}
 
 const battle = () => {
   let rounds = parseInt(ui_lookup.rounds.value);
