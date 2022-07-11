@@ -98,7 +98,7 @@ let units_info = {
     order: 3,
 	tier: 4,
     skills: { first: true },
-    unitURL:"https://static.wikia.nocookie.net/paragonpioneers/images/6/6b/Knight.png",
+    unitURL:"https://static.wikia.nocookie.net/paragonpioneers/images/f/ff/Cuirassier.png",
     weaponURL:"https://static.wikia.nocookie.net/paragonpioneers/images/c/ce/Armored_horse.png",
   },
   cannon: {
