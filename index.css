@@ -4,7 +4,7 @@ body {
   font-family: 'Sriracha', cursive;
   background-color: burlywood;
   font-weight: bold;
-  font-size: clamp(1rem, 1.0000rem + 0.0000vw, 1rem);
+  font-size: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -14,34 +14,37 @@ body {
 }
 
 h1 {
-  margin:0em;
+  margin: 0em;
 }
 
 #town {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-items:baseline;
+  align-items: baseline;
   justify-content: center;
   border: 2px solid saddlebrown;
   background-color: #fff;
   border-radius: 1em;
-  padding:1em;
+  padding: 1em;
   margin: 1em;
 }
 
 #losses {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items:baseline;
+  align-items: baseline;
   justify-content: center;
   text-align: left;
   margin-top: -2em;
 }
 
+#losses figure {
+  display: table-cell;
+  width: 45%;
+}
+
 #results h2 {
   margin-top: 0em;
+  margin-bottom: 1.5em;
 }
 
 #town img {
@@ -49,9 +52,9 @@ h1 {
 }
 
 #town img:nth-of-type(2) {
-  position:relative;
-  left:-1em;
-  top:0.75em;
+  position: relative;
+  left: -1em;
+  top: 0.75em;
   max-height: 1.5em;
 }
 
@@ -66,19 +69,19 @@ h1 {
 
 
 .unitEntry input {
-    width: 60px;
-    height: 25px;
-    line-height: 30px;
-    border-radius: 0.25em;
-    border:0px;
-    color: #fff;
-    text-align: center;
-    background: saddlebrown;
-    margin: 0.25em 1em 0em -0.75em;
-    font-family: 'Sriracha', cursive;
-    font-size: 1em;
-    font-weight: bold;
-    accent-color: saddlebrown;
+  width: 60px;
+  height: 25px;
+  line-height: 30px;
+  border-radius: 0.25em;
+  border: 0px;
+  color: #fff;
+  text-align: center;
+  background: saddlebrown;
+  margin: 0.25em 1em 0em -0.75em;
+  font-family: 'Sriracha', cursive;
+  font-size: 1em;
+  font-weight: bold;
+  accent-color: saddlebrown;
 }
 
 .unitEntry input:focus {
@@ -90,13 +93,13 @@ h1 {
   border: 2px solid saddlebrown;
   background-color: #fff;
   border-radius: 1em;
-  padding:1em;
+  padding: 1em;
   margin: 1em;
   text-align: center;
 }
 
 .hidden {
-  display:none;
+  display: none;
 }
 
 button {
@@ -113,8 +116,8 @@ button {
   font-size: 2rem;
   cursor: pointer;
   text-align: center;
-  transition: background 250ms ease-in-out, 
-              transform 150ms ease;
+  transition: background 250ms ease-in-out,
+    transform 150ms ease;
   -webkit-appearance: none;
   -moz-appearance: none;
 }
