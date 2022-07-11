@@ -450,16 +450,13 @@ const doBattle = (forces_mine, forces_theirs, rounds) => {
   let loss_t = [avg(losses.map((a) => a[1])), min(losses.map((a) => a[1])), max(losses.map((a) => a[1]))];
   let btime = format_seconds(battle_time(forces_mine, forces_theirs, false));
   console.log(loss_m);
-  let text = `Results:
-  Wins: ${decimal((100 * wins) / rounds)}%
-  Draws: ${decimal((100 * draws) / rounds)}%
-  Losses: ${decimal(100 - (100 * wins) / rounds)}%
+  let text = `Wins: ${decimal((100 * wins) / rounds)}% > Draws: ${decimal((100 * draws) / rounds)}% > Losses: ${decimal(100 - (100 * wins) / rounds)}%
   Expected losses (you): ${Object.keys(loss_m[0])
     .map((a) => `${units_info[a].name ?? a}: ${decimal(loss_m[0][a])}${loss_m[1][a] != loss_m[2][a] ? " (" + loss_m[1][a] + "-" + loss_m[2][a] +")" : ""}`)
-    .join(" ")}
+    .join(", ")}
     Expected losses (orcs): ${Object.keys(loss_t[0])
       .map((a) => `${units_info[a].name ?? a}: ${decimal(loss_t[0][a])}${loss_t[1][a] != loss_t[2][a] ? " (" + loss_t[1][a] + "-" + loss_t[2][a] +")" : ""}`)
-      .join(" ")}
+      .join(", ")}
   Battle time: ${btime}`;
   document.getElementById("results").innerText = text;
 };
