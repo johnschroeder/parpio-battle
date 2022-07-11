@@ -492,9 +492,16 @@ window.onload = () => {
     let sp = document.createElement("span");
     sp.innerText = units_info[k].name;
     let ip = document.createElement("input");
-    ip.type = "number";
-    ip.value = 0;
-    ip.addEventListener("click", selectMe);
+    if (units_info[k].tier < 5) {
+      ip.type = "number";
+      ip.value = 0;
+      ip.addEventListener("click", selectMe);
+    } else {
+      ip.type = "checkbox";
+      ip.value = 0;
+      ip.addEventListener("change", selectBoss);
+    }
+
     let unitImg = document.createElement("img");
     unitImg.src = units_info[k].unitURL;
     let weaponImg = document.createElement("img");
@@ -512,6 +519,15 @@ window.onload = () => {
 
 function selectMe(event) {
   this.select();
+}
+
+function selectBoss(event) {
+  if (this.checked) {
+    this.value = "1";
+  } else {
+    this.value = "0";
+  }
+  
 }
 
 const battle = () => {

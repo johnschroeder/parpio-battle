@@ -58,6 +58,7 @@ h1 {
     font-family: 'Sriracha', cursive;
     font-size: 1em;
     font-weight: bold;
+    accent-color: saddlebrown;
 }
 
 .unitEntry input:focus {
