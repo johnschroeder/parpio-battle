@@ -121,7 +121,7 @@ let units_info = {
     order: 0,
     tier: 1,
     skills: {},
-    unitURL: "https://static.wikia.nocookie.net/paragonpioneers/images/2/25/Orcling.png",
+    unitURL: "https://static.wikia.nocookie.net/paragonpioneers/images/1/14/Orc_1.png",
     weaponURL: "https://static.wikia.nocookie.net/paragonpioneers/images/5/50/Club.png",
   },
   hunter: {
