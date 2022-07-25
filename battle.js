@@ -490,8 +490,6 @@ window.onload = () => {
   Object.keys(units_info).forEach((k) => {
     let div = document.createElement("div");
     div.className = "unitEntry";
-    let sp = document.createElement("span");
-    sp.innerText = units_info[k].name;
     let ip = document.createElement("input");
     if (units_info[k].tier < 5) {
       ip.type = "number";
@@ -505,17 +503,16 @@ window.onload = () => {
 
     let unitImg = document.createElement("img");
     unitImg.src = units_info[k].unitURL;
+    unitImg.title = units_info[k].name;
     let weaponImg = document.createElement("img");
     weaponImg.src = units_info[k].weaponURL;
     div.appendChild(unitImg);
     div.appendChild(weaponImg);
     div.appendChild(ip);
-    div.appendChild(sp);
     if (units_info[k].player) player_div.appendChild(div);
     else enemy_div.appendChild(div);
     ui_lookup[k] = ip;
   });
-  // doBattle(forces_mine, forces_theirs, 1000);
 };
 
 function selectMe(event) {
