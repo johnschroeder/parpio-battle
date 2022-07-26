@@ -18,6 +18,9 @@ export class Army {
         this.limit = limit;
     }
 
+    clear() {
+        this.setCounts(new Map<string, number>());
+    }
 
     setCount(unitType: string, newCount: number) {
         if (this.count(unitType) === newCount) {
@@ -72,8 +75,28 @@ export class Army {
         this.setCounts(newCounts);
     }
 
-    count(unitType: string): number {
-        return this.counts.get(unitType) || 0;
+    fillCount(unitType: string) {
+        if (this.limit === undefined) {
+            throw Error('fillCount called on an unlimited army');
+        }
+        let availableSpace = this.limit;
+        this.counts.forEach((count, name) => {
+            if (name !== unitType) {
+                availableSpace -= count;
+            }
+        });
+        this.setCount(unitType, availableSpace);
+    }
+
+    setAll(unitType: string) {
+        if (this.limit === undefined) {
+            throw Error('setAll called on an unlimited army');
+        }
+        this.setCounts(new Map<string, number>([[unitType, this.limit]]));
+    }
+
+    count(unitType: string): number | undefined {
+        return this.counts.get(unitType);
     }
 
     toUnits(): Unit[] {

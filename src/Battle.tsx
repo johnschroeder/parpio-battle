@@ -25,7 +25,7 @@ export function Battle(props: BattleProps) {
     const [results, setResults] = useState<BattleResults | undefined>(undefined);
     const [round, setRound] = useState<number | undefined>(undefined);
     return <div className="battle">
-        <button onClick={() => runSim(props.playerArmy, props.enemyArmy, setRound, setResults)}> Attack! </button>
+        <button className="run" onClick={() => runSim(props.playerArmy, props.enemyArmy, setRound, setResults)}> Attack! </button>
         {round && <div>Simulating round #{round}</div>}
         <ResultsDisplay results={results} />
     </div>
@@ -108,7 +108,7 @@ const roundCount = 1000;
 function battleTime(playerArmy: Army, enemyArmy: Army, perk: boolean): number {
     let tierSum = 0;
     unitInfos.forEach(u => {
-        tierSum += u.tier * (playerArmy.count(u.name) + enemyArmy.count(u.name));
+        tierSum += u.tier * ((playerArmy.count(u.name) || 0) + (enemyArmy.count(u.name) || 0));
     })
     let result = Math.round(Math.pow(tierSum * 2, 1.4));
     if (perk) result = Math.max(0, result - 2 * 60 * 60) / 2;
@@ -195,17 +195,21 @@ function fightPhase(pUnits: Unit[], eUnits: Unit[], filter: (u: Unit) => boolean
 
 function casualties(army: Army, remainingUnits: UnitInfo[]): Casualty[] {
     // reconstruct losses by subtracting remaining units from original army
+    debugger;
     let losses = new Map<string, number>();
     unitInfos.forEach(u => {
-        losses.set(u.name, army.count(u.name));
+        const c = army.count(u.name);
+        if (c !== undefined) {
+            losses.set(u.name, c);
+        }
     });
     remainingUnits.forEach(u => {
-        losses.set(u.name, losses.get(u.name) || 0 - 1);
+        losses.set(u.name, (losses.get(u.name) || 0) - 1);
     });
     let casualties: Casualty[] = []
     unitInfos.forEach(u => {
         const count = losses.get(u.name);
-        if (!count) {
+        if (count === undefined) {
             return;
         }
         casualties.push({ type: u.name, count: count });
