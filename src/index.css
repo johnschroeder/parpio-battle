@@ -5,6 +5,9 @@ body {
   background-color: burlywood;
   font-weight: bold;
   font-size: 100%;
+}
+
+#root {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -17,7 +20,7 @@ h1 {
   margin: 0em;
 }
 
-#town {
+.town {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -30,28 +33,28 @@ h1 {
   margin: 1em;
 }
 
-#losses {
+.losses {
   align-items: baseline;
   justify-content: center;
   text-align: left;
   margin-top: -2em;
 }
 
-#losses figure {
+.losses figure {
   display: table-cell;
   width: 45%;
 }
 
-#results h2 {
+.results h2 {
   margin-top: 0em;
   margin-bottom: 1.5em;
 }
 
-#town img {
+.town img {
   max-height: 2em;
 }
 
-#town img:nth-of-type(2) {
+.town img:nth-of-type(2) {
   position: relative;
   left: -1em;
   top: 0.75em;
@@ -89,7 +92,7 @@ h1 {
   color: black;
 }
 
-#battle {
+.battle {
   border: 2px solid saddlebrown;
   background-color: #fff;
   border-radius: 1em;
