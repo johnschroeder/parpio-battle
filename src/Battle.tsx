@@ -62,13 +62,14 @@ function Losses(props: { desc: string, casualties: Casualty[][] }) {
             avg.set(t, (avg.get(t) ?? 0) + c / props.casualties.length);
         })
     });
+    debugger;
     const types = Array.from(avg.keys());
     return <figure>
         <figcaption>Expected losses ({props.desc}):</figcaption>
         <>
             {types.map(t =>
                 <li key={t}>
-                    {t}: {decimal(avg.get(t) ?? 0)}{min.get(t) !== max.get(t) ?? <>({min.get(t) ?? 0} - {max.get(t) ?? 0})</>}
+                    {t}: {decimal(avg.get(t) ?? 0)}{min.get(t) !== max.get(t) && <> ({min.get(t) ?? 0} - {max.get(t) ?? 0})</>}
                 </li>
             )}
         </>
