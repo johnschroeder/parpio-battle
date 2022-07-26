@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/parpio-battle/static/css/main.43ef424e.css",
+    "main.js": "/parpio-battle/static/js/main.a6f331af.js",
+    "static/js/787.3b925ed2.chunk.js": "/parpio-battle/static/js/787.3b925ed2.chunk.js",
+    "index.html": "/parpio-battle/index.html",
+    "main.43ef424e.css.map": "/parpio-battle/static/css/main.43ef424e.css.map",
+    "main.a6f331af.js.map": "/parpio-battle/static/js/main.a6f331af.js.map",
+    "787.3b925ed2.chunk.js.map": "/parpio-battle/static/js/787.3b925ed2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.43ef424e.css",
+    "static/js/main.a6f331af.js"
+  ]
+}
