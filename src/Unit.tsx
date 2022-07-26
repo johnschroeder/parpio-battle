@@ -21,7 +21,7 @@ export function UnitInput(props: UnitProps) {
             <input type="number"
                 value={props.count}
                 onClick={e => e.currentTarget.select()}
-                onChange={e => props.army.setCount(props.name, parseInt(e.currentTarget.value))} />
+                onChange={e => props.army.setCount(props.name, ~~e.currentTarget.value)} />
             {props.isPlayer && <>
                 <button className="config" onClick={() => props.army.setCount(props.name, props.count + 1)}>+1</button>
                 <button className="config" onClick={() => props.army.setCount(props.name, props.count + 5)}>+5</button>

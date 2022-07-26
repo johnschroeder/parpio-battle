@@ -195,11 +195,10 @@ function fightPhase(pUnits: Unit[], eUnits: Unit[], filter: (u: Unit) => boolean
 
 function casualties(army: Army, remainingUnits: UnitInfo[]): Casualty[] {
     // reconstruct losses by subtracting remaining units from original army
-    debugger;
     let losses = new Map<string, number>();
     unitInfos.forEach(u => {
         const c = army.count(u.name);
-        if (c !== undefined) {
+        if (c) {
             losses.set(u.name, c);
         }
     });
