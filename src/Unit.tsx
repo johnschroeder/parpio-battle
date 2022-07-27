@@ -1,5 +1,18 @@
 import { Army } from "./Army";
 
+type AdjustUnitCountButtonProps = {
+    adjust: () => void
+}
+
+function AdjustUnitCountButton(props: React.PropsWithChildren<AdjustUnitCountButtonProps>) {
+    return <button
+        className="config"
+        tabIndex={-1}
+        onClick={props.adjust}>
+        {props.children}
+    </button>
+}
+
 type UnitProps = {
     name: string,
     unitImageURL: string,
@@ -19,14 +32,14 @@ export function UnitInput(props: UnitProps) {
     } else {
         input = <>
             <input type="number"
-                value={props.count}
+                value={props.count + ''}
                 onClick={e => e.currentTarget.select()}
-                onChange={e => props.army.setCount(props.name, ~~e.currentTarget.value)} />
+                onChange={e => props.army.setCount(props.name, ~~(e.currentTarget.value || 0))} />
             {props.isPlayer && <>
-                <button className="config" onClick={() => props.army.setCount(props.name, props.count + 1)}>+1</button>
-                <button className="config" onClick={() => props.army.setCount(props.name, props.count + 5)}>+5</button>
-                <button className="config" onClick={() => props.army.fillCount(props.name)}>Fill</button>
-                <button className="config" onClick={() => props.army.setAll(props.name)}>All</button>
+                <AdjustUnitCountButton adjust={() => props.army.setCount(props.name, props.count + 1)}>+1</AdjustUnitCountButton>
+                <AdjustUnitCountButton adjust={() => props.army.setCount(props.name, props.count + 5)}>+5</AdjustUnitCountButton>
+                <AdjustUnitCountButton adjust={() => props.army.fillCount(props.name)}>Fill</AdjustUnitCountButton>
+                <AdjustUnitCountButton adjust={() => props.army.setAll(props.name)}>All</AdjustUnitCountButton>
             </>}
         </>
     }
