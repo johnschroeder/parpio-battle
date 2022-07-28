@@ -18,6 +18,14 @@ export class Army {
         this.limit = limit;
     }
 
+    hasUnits(): boolean {
+        let result = false;
+        this.counts.forEach(c => {
+            if (c > 0) result = true;
+        });
+        return result;
+    }
+
     clear() {
         this.setCounts(new Map<UnitName, number>());
     }

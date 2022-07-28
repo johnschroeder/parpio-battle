@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Army, Unit } from './Army';
 import { UnitInfo, unitInfos, UnitName, UnitSkills } from './UnitInfo';
 
@@ -25,10 +25,22 @@ type BattleProps = {
 
 export function Battle(props: BattleProps) {
     const [results, setResults] = useState<BattleResults | undefined>(undefined);
-    const [round, setRound] = useState<number | undefined>(undefined);
+
+    const showResults = useMemo(() => {
+        return props.playerArmy.hasUnits() && props.enemyArmy.hasUnits();
+    }, [props.playerArmy, props.enemyArmy])
+
+    useEffect(() => {
+        if (showResults) {
+            runSim(props.playerArmy, props.enemyArmy, setResults);
+        } else {
+            setResults(undefined);
+        }
+    }, [props.playerArmy, props.enemyArmy])
+
     return <div className="battle">
-        <button className="run" onClick={() => runSim(props.playerArmy, props.enemyArmy, setRound, setResults)}> Attack! </button>
-        {round && <div>Simulating round #{round}</div>}
+        <h2>Simulation Results</h2>
+        {/* <button className="run" onClick={() => runSim(props.playerArmy, props.enemyArmy, setResults)}> Attack! </button> */}
         <ResultsDisplay results={results} />
     </div>
 }
@@ -181,12 +193,11 @@ function updateStats(stats: SimStats, br: BattleResult): boolean {
 const minRoundCount = 50;
 const maxRoundCount = 1000;
 
-async function runSim(playerArmy: Army, enemyArmy: Army, setRound: (r: number | undefined) => void, setResults: (results: BattleResults | undefined) => void) {
+async function runSim(playerArmy: Army, enemyArmy: Army, setResults: (results: BattleResults | undefined) => void) {
     let results: BattleResult[] = [];
     let stats = newSimStats();
     const startTime = performance.now();
     for (let i = 0; i < maxRoundCount; i++) {
-        setRound(i + 1);
         const result = oneBattle(playerArmy, enemyArmy);
         results.push(result);
         const significantChange = updateStats(stats, result);
@@ -195,7 +206,6 @@ async function runSim(playerArmy: Army, enemyArmy: Army, setRound: (r: number | 
         }
     }
     const endTime = performance.now();
-    setRound(undefined)
     setResults({
         results: results,
         stats: stats,
