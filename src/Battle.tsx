@@ -21,6 +21,7 @@ type BattleResults = {
 type BattleProps = {
     playerArmy: Army
     enemyArmy: Army
+    berserk: boolean;
 }
 
 export function Battle(props: BattleProps) {
@@ -32,7 +33,7 @@ export function Battle(props: BattleProps) {
 
     useEffect(() => {
         if (showResults) {
-            runSim(props.playerArmy, props.enemyArmy, setResults);
+            runSim(props.playerArmy, props.enemyArmy, setResults, props.berserk);
         } else {
             setResults(undefined);
         }
@@ -96,13 +97,13 @@ function ResultsDisplay(props: { results: BattleResults | undefined }) {
 }
 
 // Calculate battle time in seconds
-function battleTime(playerArmy: Army, enemyArmy: Army, perk: boolean): number {
+function battleTime(playerArmy: Army, enemyArmy: Army, berserk: boolean): number {
     let tierSum = 0;
     unitInfos.forEach(u => {
         tierSum += u.tier * ((playerArmy.count(u.name) || 0) + (enemyArmy.count(u.name) || 0));
     })
     let result = Math.round(Math.pow(tierSum * 2, 1.4));
-    if (perk) result = Math.max(0, result - 2 * 60 * 60) / 2;
+    if (berserk) result = Math.max(0, result - 2 * 60 * 60) / 2;
     return Math.min(result, 8 * 60 * 60);
 }
 
@@ -193,7 +194,7 @@ function updateStats(stats: SimStats, br: BattleResult): boolean {
 const minRoundCount = 50;
 const maxRoundCount = 1000;
 
-async function runSim(playerArmy: Army, enemyArmy: Army, setResults: (results: BattleResults | undefined) => void) {
+async function runSim(playerArmy: Army, enemyArmy: Army, setResults: (results: BattleResults | undefined) => void, berserk: boolean) {
     let results: BattleResult[] = [];
     let stats = newSimStats();
     const startTime = performance.now();
@@ -210,7 +211,7 @@ async function runSim(playerArmy: Army, enemyArmy: Army, setResults: (results: B
         results: results,
         stats: stats,
         simulationDurationMS: endTime - startTime,
-        battleDurationSeconds: battleTime(playerArmy, enemyArmy, false),
+        battleDurationSeconds: battleTime(playerArmy, enemyArmy, berserk),
     })
 }
 

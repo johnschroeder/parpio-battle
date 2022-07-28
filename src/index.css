@@ -7,15 +7,6 @@ body {
   font-size: 100%;
 }
 
-#root {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: baseline;
-  align-content: flex-start;
-  justify-content: center;
-}
-
 h1 {
   margin: 0em;
 }
@@ -176,4 +167,13 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.settings {
+  display: inline-block;
+  border: 2px solid saddlebrown;
+  background-color: #fff;
+  border-radius: 1em;
+  padding: 1em;
+  margin: 1em;
 }
