@@ -18,8 +18,7 @@ function UnitList(props: UnitListProps) {
                 name={u.name}
                 key={u.name}
                 isBoss={isBoss(u)}
-                unitImageURL={u.unitImageURL}
-                weaponImageURL={u.weaponImageURL}
+                icon={u.icon}
                 isPlayer={props.isPlayer}
                 count={props.army.count(u.name) || 0}
                 army={props.army}

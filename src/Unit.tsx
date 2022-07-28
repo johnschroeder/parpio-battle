@@ -16,8 +16,7 @@ function AdjustUnitCountButton(props: React.PropsWithChildren<AdjustUnitCountBut
 
 type UnitProps = {
     name: UnitName,
-    unitImageURL: string,
-    weaponImageURL: string,
+    icon: string,
     count: number,
     isBoss: boolean;
     isPlayer: boolean;
@@ -45,8 +44,7 @@ export function UnitInput(props: UnitProps) {
         </>
     }
     return <div className="unitEntry">
-        <img src={props.unitImageURL} title={props.name} />
-        <img src={props.weaponImageURL} />
+        <img src={props.icon} title={props.name} />
         {input}
     </div>;
 }

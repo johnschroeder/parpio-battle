@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Army, Unit } from './Army';
-import { UnitInfo, unitInfos, UnitName, UnitSkills } from './UnitInfo';
+import { UnitInfo, unitInfoByName, unitInfos, UnitName, UnitSkills } from './UnitInfo';
 
 type Casualty = {
     type: UnitName
@@ -51,7 +51,7 @@ function formatSeconds(seconds: number): string {
     let minutes = Math.floor(seconds / 60);
     let hours = Math.floor(minutes / 60);
     minutes = minutes % 60;
-    return (hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (out_seconds > 0 ? out_seconds + "s " : "")
+    return (hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (out_seconds > 0 ? out_seconds + "s " : "Instant");
 }
 
 function decimal(v: number): number {
@@ -66,7 +66,7 @@ function Losses(props: { desc: string, casualties: CasualtyStats, roundCount: nu
         <>
             {types.map(t =>
                 <li key={t}>
-                    {t}: {decimal((cs.total.get(t) ?? 0) / cs.roundCount)}
+                    <img src={unitInfoByName(t).icon} />: {decimal((cs.total.get(t) ?? 0) / cs.roundCount)}
                     {cs.min.get(t) !== cs.max.get(t) && <> ({cs.min.get(t) ?? 0} - {cs.max.get(t) ?? 0})</>}
                 </li>
             )}
