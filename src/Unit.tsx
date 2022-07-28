@@ -1,4 +1,5 @@
 import { Army } from "./Army";
+import { UnitName } from "./UnitInfo";
 
 type AdjustUnitCountButtonProps = {
     adjust: () => void
@@ -14,7 +15,7 @@ function AdjustUnitCountButton(props: React.PropsWithChildren<AdjustUnitCountBut
 }
 
 type UnitProps = {
-    name: string,
+    name: UnitName,
     unitImageURL: string,
     weaponImageURL: string,
     count: number,

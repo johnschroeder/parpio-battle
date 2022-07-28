@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type UnitName = string
+
 export type UnitSkills = {
     firstStrike: boolean,
     ranged: boolean,
@@ -10,7 +12,7 @@ export type UnitSkills = {
 }
 
 export type UnitInfo = {
-    name: string,
+    name: UnitName,
     friendly: boolean,
     maxHp: number,
     attack: number,
@@ -303,3 +305,15 @@ export const unitInfos: UnitInfo[] = [
         weaponImageURL: "https://static.wikia.nocookie.net/paragonpioneers/images/a/a6/Cannon.png",
     },
 ];
+
+var unitInfosByName: Map<string, UnitInfo> = (() => {
+    var result = new Map<string, UnitInfo>();
+    unitInfos.forEach(u => {
+        result.set(u.name, u);
+    });
+    return result;
+})()
+
+export function unitInfoByName(name: string): UnitInfo {
+    return unitInfosByName.get(name)!;
+}

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { isBoss, UnitInfo, unitInfos } from './UnitInfo';
+import { isBoss, UnitInfo, unitInfoByName, unitInfos, UnitName } from './UnitInfo';
 
 export type Unit = UnitInfo & { hp: number }
 
 export class Army {
-    private counts: Map<string, number>;
-    private setCounts: (counts: Map<string, number>) => void;
+    private counts: Map<UnitName, number>;
+    private setCounts: (counts: Map<UnitName, number>) => void;
     private limit: number | undefined;
 
     constructor(
-        counts: Map<string, number>,
-        setCounts: (counts: Map<string, number>) => void,
+        counts: Map<UnitName, number>,
+        setCounts: (counts: Map<UnitName, number>) => void,
         limit?: number,
     ) {
         this.counts = counts;
@@ -19,10 +19,10 @@ export class Army {
     }
 
     clear() {
-        this.setCounts(new Map<string, number>());
+        this.setCounts(new Map<UnitName, number>());
     }
 
-    setCount(unitType: string, newCount: number) {
+    setCount(unitType: UnitName, newCount: number) {
         if (this.count(unitType) === newCount) {
             return;
         }
@@ -75,7 +75,7 @@ export class Army {
         this.setCounts(newCounts);
     }
 
-    fillCount(unitType: string) {
+    fillCount(unitType: UnitName) {
         if (this.limit === undefined) {
             throw Error('fillCount called on an unlimited army');
         }
@@ -88,21 +88,21 @@ export class Army {
         this.setCount(unitType, availableSpace);
     }
 
-    setAll(unitType: string) {
+    setAll(unitType: UnitName) {
         if (this.limit === undefined) {
             throw Error('setAll called on an unlimited army');
         }
-        this.setCounts(new Map<string, number>([[unitType, this.limit]]));
+        this.setCounts(new Map<UnitName, number>([[unitType, this.limit]]));
     }
 
-    count(unitType: string): number | undefined {
+    count(unitType: UnitName): number | undefined {
         return this.counts.get(unitType);
     }
 
     toUnits(): Unit[] {
         let units: Unit[] = [];
         this.counts.forEach((count, name) => {
-            const unit = unitInfos.find(u => u.name === name);
+            const unit = unitInfoByName(name);
             if (!unit) {
                 return;
             }
@@ -116,6 +116,6 @@ export class Army {
 }
 
 export function useArmy(limit?: number): Army {
-    const [counts, setCounts] = useState(new Map<string, number>());
+    const [counts, setCounts] = useState(new Map<UnitName, number>());
     return new Army(counts, setCounts, limit);
 }
