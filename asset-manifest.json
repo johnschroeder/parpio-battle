@@ -1,37 +1,37 @@
 {
   "files": {
     "main.css": "/parpio-battle/static/css/main.149a9cb1.css",
-    "main.js": "/parpio-battle/static/js/main.c105c5c0.js",
+    "main.js": "/parpio-battle/static/js/main.e663b6dd.js",
     "static/js/787.3b925ed2.chunk.js": "/parpio-battle/static/js/787.3b925ed2.chunk.js",
     "static/media/Cuirassier.png": "/parpio-battle/static/media/Cuirassier.b0f5e5e834b701b1a9dc.png",
+    "static/media/OrcBoss4.png": "/parpio-battle/static/media/OrcBoss4.a45f6a892f8374852dfa.png",
+    "static/media/Cannoneer.png": "/parpio-battle/static/media/Cannoneer.234189c30af4fb577441.png",
+    "static/media/LongbowArcher.png": "/parpio-battle/static/media/LongbowArcher.f079b810fe16e7b93274.png",
+    "static/media/Footsoldier.png": "/parpio-battle/static/media/Footsoldier.83aa9bae3d3016804ab9.png",
     "static/media/OrcCannoneer.png": "/parpio-battle/static/media/OrcCannoneer.d71d52fd23c230085eba.png",
+    "static/media/CrossbowArcher.png": "/parpio-battle/static/media/CrossbowArcher.4923a3497e4e867ff966.png",
     "static/media/OrcCuirassier.png": "/parpio-battle/static/media/OrcCuirassier.7a3829905f5492e9de4f.png",
+    "static/media/OrcBoss2.png": "/parpio-battle/static/media/OrcBoss2.1a700d86428ab16af5da.png",
+    "static/media/OrcBoss3.png": "/parpio-battle/static/media/OrcBoss3.cb234d0c177ec8a1fe91.png",
     "static/media/Archer.png": "/parpio-battle/static/media/Archer.0399db7238521a836d90.png",
     "static/media/Knight.png": "/parpio-battle/static/media/Knight.7456a2fd8ad943155c76.png",
     "static/media/OrcCrossbowArcher.png": "/parpio-battle/static/media/OrcCrossbowArcher.7ff4a921c4935dfb729c.png",
     "static/media/Cavalry.png": "/parpio-battle/static/media/Cavalry.5bb0e8857cc4cd3da0ec.png",
     "static/media/OrcCavalry.png": "/parpio-battle/static/media/OrcCavalry.fa50fd18d0429ffb145d.png",
     "static/media/OrcLongbowArcher.png": "/parpio-battle/static/media/OrcLongbowArcher.d86430f1f3eeb9a61497.png",
+    "static/media/OrcBoss1.png": "/parpio-battle/static/media/OrcBoss1.e1e7ca7babab6665e240.png",
     "static/media/OrcFootsoldier.png": "/parpio-battle/static/media/OrcFootsoldier.17b4ef77b398439d8c36.png",
     "static/media/OrcArcher.png": "/parpio-battle/static/media/OrcArcher.9c57a63839d80396a921.png",
     "static/media/OrcKnight.png": "/parpio-battle/static/media/OrcKnight.62bda5520f8e32fbe7a4.png",
     "static/media/Militia.png": "/parpio-battle/static/media/Militia.4b0b9491a1fdecb01668.png",
     "static/media/Orcling.png": "/parpio-battle/static/media/Orcling.01f3c6a05dea23729b31.png",
-    "static/media/Orc_boss_4.png": "/parpio-battle/static/media/Orc_boss_4.8273b129d74844b37dae.png",
-    "static/media/Orc_boss_1.png": "/parpio-battle/static/media/Orc_boss_1.ec3cd2a5afbf19a5b2b1.png",
-    "static/media/Orc_boss_2.png": "/parpio-battle/static/media/Orc_boss_2.117636772f6e1d1639d8.png",
-    "static/media/Orc_boss_3.png": "/parpio-battle/static/media/Orc_boss_3.eac8f73c228e1a1f3039.png",
-    "static/media/Recruit.png": "/parpio-battle/static/media/Recruit.cfd012f90839ccc59d23.png",
-    "static/media/Longbow_archer.png": "/parpio-battle/static/media/Longbow_archer.85436b87d67065f0c267.png",
-    "static/media/Crossbow_archer.png": "/parpio-battle/static/media/Crossbow_archer.7c8650462891aa380bf0.png",
-    "static/media/Cannonneer.png": "/parpio-battle/static/media/Cannonneer.e1aa843c8c41d7756c9d.png",
     "index.html": "/parpio-battle/index.html",
     "main.149a9cb1.css.map": "/parpio-battle/static/css/main.149a9cb1.css.map",
-    "main.c105c5c0.js.map": "/parpio-battle/static/js/main.c105c5c0.js.map",
+    "main.e663b6dd.js.map": "/parpio-battle/static/js/main.e663b6dd.js.map",
     "787.3b925ed2.chunk.js.map": "/parpio-battle/static/js/787.3b925ed2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.149a9cb1.css",
-    "static/js/main.c105c5c0.js"
+    "static/js/main.e663b6dd.js"
   ]
 }
