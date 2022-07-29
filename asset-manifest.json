@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/parpio-battle/static/css/main.149a9cb1.css",
-    "main.js": "/parpio-battle/static/js/main.e663b6dd.js",
+    "main.css": "/parpio-battle/static/css/main.8b5bbe42.css",
+    "main.js": "/parpio-battle/static/js/main.d8a5538d.js",
     "static/js/787.3b925ed2.chunk.js": "/parpio-battle/static/js/787.3b925ed2.chunk.js",
     "static/media/Cuirassier.png": "/parpio-battle/static/media/Cuirassier.b0f5e5e834b701b1a9dc.png",
     "static/media/OrcBoss4.png": "/parpio-battle/static/media/OrcBoss4.a45f6a892f8374852dfa.png",
@@ -26,12 +26,12 @@
     "static/media/Militia.png": "/parpio-battle/static/media/Militia.4b0b9491a1fdecb01668.png",
     "static/media/Orcling.png": "/parpio-battle/static/media/Orcling.01f3c6a05dea23729b31.png",
     "index.html": "/parpio-battle/index.html",
-    "main.149a9cb1.css.map": "/parpio-battle/static/css/main.149a9cb1.css.map",
-    "main.e663b6dd.js.map": "/parpio-battle/static/js/main.e663b6dd.js.map",
+    "main.8b5bbe42.css.map": "/parpio-battle/static/css/main.8b5bbe42.css.map",
+    "main.d8a5538d.js.map": "/parpio-battle/static/js/main.d8a5538d.js.map",
     "787.3b925ed2.chunk.js.map": "/parpio-battle/static/js/787.3b925ed2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.149a9cb1.css",
-    "static/js/main.e663b6dd.js"
+    "static/css/main.8b5bbe42.css",
+    "static/js/main.d8a5538d.js"
   ]
 }
