@@ -1,22 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Army, Unit } from './Army';
-import { UnitInfo, unitInfoByName, unitInfos, UnitName, UnitSkills } from './UnitInfo';
-
-type Casualty = {
-    type: UnitName
-    count: number
-}
-type BattleResult = {
-    winner: 'player' | 'enemy' | 'draw'
-    playerCasualties: Casualty[]
-    enemyCasualties: Casualty[]
-}
-type BattleResults = {
-    results: BattleResult[]
-    simulationDurationMS: number
-    battleDurationSeconds: number
-    stats: SimStats
-}
+import { useEffect, useMemo, useState } from 'react';
+import { Army } from './Army';
+import { BattleLogEntry, BattleResults, CasualtyStats, runSim } from './simulator';
+import { unitInfoByName } from './UnitInfo';
 
 type BattleProps = {
     playerArmy: Army
@@ -37,12 +22,13 @@ export function Battle(props: BattleProps) {
         } else {
             setResults(undefined);
         }
-    }, [props.playerArmy, props.enemyArmy])
+    }, [props.playerArmy, props.enemyArmy, props.berserk, showResults])
 
     return <div className="battle">
         <h2>Simulation Results</h2>
         {/* <button className="run" onClick={() => runSim(props.playerArmy, props.enemyArmy, setResults)}> Attack! </button> */}
         <ResultsDisplay results={results} />
+        {results && <BattleLogDisplay log={results.battleLog} />}
     </div>
 }
 
@@ -74,6 +60,33 @@ function Losses(props: { desc: string, casualties: CasualtyStats, roundCount: nu
     </figure>
 }
 
+function BattleLogDisplay(props: { log: BattleLogEntry[] }) {
+    if (!props.log) {
+        return null;
+    }
+    return <div>
+        <h2>Sample Battle Log</h2>
+        <table className="battleLog">
+            <thead>
+                <th>Stage</th>
+                <th>Enemy</th>
+                <th>Player</th>
+            </thead>
+            <tbody>
+                {props.log.map(entry => <tr key={entry.stageName}>
+                    <td>{entry.stageName}</td>
+                    <td><div className="battleLogUnitList">{entry.enemyRemaining.map(uc =>
+                        <div key={uc.type} className="battleLogUnitCount"><img src={unitInfoByName(uc.type).icon} />{uc.count}</div>
+                    )}</div></td>
+                    <td><div className="battleLogUnitList">{entry.playerRemaining.map(uc =>
+                        <div key={uc.type} className="battleLogUnitCount"><img src={unitInfoByName(uc.type).icon} />{uc.count}</div>
+                    )}</div></td>
+                </tr>)}
+            </tbody>
+        </table>
+    </div>
+}
+
 function ResultsDisplay(props: { results: BattleResults | undefined }) {
     if (!props.results) {
         return null;
@@ -94,235 +107,4 @@ function ResultsDisplay(props: { results: BattleResults | undefined }) {
         Battle time: {formatSeconds(props.results.battleDurationSeconds)}
         {/* Simulation ran {props.results.stats.roundCount} battles in {props.results.simulationDurationMS}ms. */}
     </div>
-}
-
-// Calculate battle time in seconds
-function battleTime(playerArmy: Army, enemyArmy: Army, berserk: boolean): number {
-    let tierSum = 0;
-    unitInfos.forEach(u => {
-        tierSum += u.tier * ((playerArmy.count(u.name) || 0) + (enemyArmy.count(u.name) || 0));
-    })
-    let result = Math.round(Math.pow(tierSum * 2, 1.4));
-    if (berserk) result = Math.max(0, result - 2 * 60 * 60) / 2;
-    return Math.min(result, 8 * 60 * 60);
-}
-
-type CasualtyStats = {
-    roundCount: number
-    min: Map<UnitName, number>
-    max: Map<UnitName, number>
-    total: Map<UnitName, number>
-}
-
-type SimStats = {
-    winCount: number
-    drawCount: number
-    roundCount: number
-    enemyCasualties: CasualtyStats
-    playerCasualties: CasualtyStats
-}
-
-function newSimStats(): SimStats {
-    return {
-        winCount: 0,
-        drawCount: 0,
-        roundCount: 0,
-        enemyCasualties: {
-            roundCount: 0,
-            min: new Map<UnitName, number>(),
-            max: new Map<UnitName, number>(),
-            total: new Map<UnitName, number>(),
-        },
-        playerCasualties: {
-            roundCount: 0,
-            min: new Map<UnitName, number>(),
-            max: new Map<UnitName, number>(),
-            total: new Map<UnitName, number>(),
-        }
-    }
-}
-
-function isSignificantChange(prev: number, next: number): boolean {
-    if (prev === 0 && next === 0) return false;
-    if (prev === 0 || next === 0) return true;
-    return Math.abs(prev - next) / next > 0.05;
-}
-
-// returns true if any of the stats had significant changes
-function updateCasualtyStats(casualtyStats: CasualtyStats, casualties: Casualty[]): boolean {
-    let significantChange = false;
-    casualties.forEach(casualty => {
-        casualtyStats.roundCount++;
-        const t = casualty.type;
-        const c = casualty.count;
-        const oldMax = casualtyStats.max.get(t);
-        if (oldMax === undefined || c > oldMax) {
-            casualtyStats.max.set(t, c);
-            if (oldMax === undefined || isSignificantChange(oldMax, c)) significantChange = true;
-        }
-        const oldMin = casualtyStats.min.get(t);
-        if (oldMin === undefined || c < oldMin) {
-            casualtyStats.min.set(t, c);
-            if (oldMin === undefined || isSignificantChange(oldMin, c)) significantChange = true;
-        }
-        const oldTotal = casualtyStats.total.get(t);
-        if (oldTotal === undefined) {
-            significantChange = true;
-        } else {
-            const oldAvg = oldTotal / (casualtyStats.roundCount - 1);
-            const newAvg = (oldTotal + c) / casualtyStats.roundCount;
-            if (isSignificantChange(oldAvg, newAvg)) significantChange = true;
-        }
-        casualtyStats.total.set(t, (oldTotal ?? 0) + c);
-    });
-
-    return significantChange;
-}
-
-function updateStats(stats: SimStats, br: BattleResult): boolean {
-    stats.roundCount++;
-    if (br.winner == 'player' || br.winner == 'draw') stats.winCount++;
-    if (br.winner == 'draw') stats.drawCount++;
-
-    let significantChange = false;
-    significantChange ||= updateCasualtyStats(stats.enemyCasualties, br.enemyCasualties);
-    significantChange ||= updateCasualtyStats(stats.playerCasualties, br.playerCasualties);
-
-    return significantChange;
-}
-
-const minRoundCount = 50;
-const maxRoundCount = 1000;
-
-async function runSim(playerArmy: Army, enemyArmy: Army, setResults: (results: BattleResults | undefined) => void, berserk: boolean) {
-    let results: BattleResult[] = [];
-    let stats = newSimStats();
-    const startTime = performance.now();
-    for (let i = 0; i < maxRoundCount; i++) {
-        const result = oneBattle(playerArmy, enemyArmy);
-        results.push(result);
-        const significantChange = updateStats(stats, result);
-        if (i + 1 >= minRoundCount && !significantChange) {
-            break;
-        }
-    }
-    const endTime = performance.now();
-    setResults({
-        results: results,
-        stats: stats,
-        simulationDurationMS: endTime - startTime,
-        battleDurationSeconds: battleTime(playerArmy, enemyArmy, berserk),
-    })
-}
-
-function findTarget(units: Unit[], skills: UnitSkills): Unit | undefined {
-    if (!skills.flanking) {
-        return units.find(u => u.maxHp > 0);
-    }
-    let weakest: UnitInfo | undefined = undefined;
-    units.forEach(u => {
-        if (u.maxHp <= 0) {
-            return;
-        }
-        if (!weakest || u.maxHp < weakest.maxHp) {
-            weakest = u;
-        }
-    });
-    return weakest;
-}
-
-function damage(defenders: Unit[], damage: number, skills: UnitSkills) {
-    do {
-        let t = findTarget(defenders, skills);
-        if (!t) break;
-        if (damage < t.maxHp) {
-            t.maxHp -= damage;
-            damage = 0;
-        } else {
-            damage -= t.maxHp;
-            t.maxHp = 0;
-        }
-    } while (damage > 0 && skills.trample);
-}
-
-function attack(attackers: Unit[], defenders: Unit[]) {
-    attackers.forEach((unit) => {
-        let dmg = unit.attack;
-        if (Math.random() < unit.crit) dmg *= 2;
-        damage(defenders, dmg, unit.skills);
-    });
-}
-
-function removeDead(units: Unit[]): Unit[] {
-    return units.filter(u => u.maxHp > 0);
-}
-
-function firstPhase(u: Unit): boolean {
-    return u.skills.firstStrike || u.skills.doubleStrike;
-}
-
-function secondPhase(u: Unit): boolean {
-    return !(u.skills.firstStrike || u.skills.lastStrike || u.skills.doubleStrike);
-}
-
-function thirdPhase(u: Unit): boolean {
-    return u.skills.lastStrike || u.skills.doubleStrike;
-}
-
-const phases = [firstPhase, secondPhase, thirdPhase];
-
-function fightPhase(pUnits: Unit[], eUnits: Unit[], filter: (u: Unit) => boolean): [Unit[], Unit[]] {
-    attack(pUnits.filter(filter), eUnits);
-    attack(eUnits.filter(filter), pUnits);
-    pUnits = removeDead(pUnits);
-    eUnits = removeDead(eUnits);
-    return [pUnits, eUnits];
-}
-
-function casualties(army: Army, remainingUnits: UnitInfo[]): Casualty[] {
-    // reconstruct losses by subtracting remaining units from original army
-    let losses = new Map<UnitName, number>();
-    unitInfos.forEach(u => {
-        const c = army.count(u.name);
-        if (c) {
-            losses.set(u.name, c);
-        }
-    });
-    remainingUnits.forEach(u => {
-        losses.set(u.name, (losses.get(u.name) || 0) - 1);
-    });
-    let casualties: Casualty[] = []
-    unitInfos.forEach(u => {
-        const count = losses.get(u.name);
-        if (count === undefined) {
-            return;
-        }
-        casualties.push({ type: u.name, count: count });
-    })
-    return casualties;
-}
-
-function oneBattle(playerArmy: Army, enemyArmy: Army): BattleResult {
-    console.time('toUnits');
-    let pUnits = playerArmy.toUnits();
-    let eUnits = enemyArmy.toUnits();
-    console.timeEnd('toUnits');
-    outer:
-    while (true) {
-        for (let i = 0; i < phases.length; i++) {
-            [pUnits, eUnits] = fightPhase(pUnits, eUnits, phases[i]);
-            if (pUnits.length == 0 || eUnits.length == 0) break outer;
-        }
-    }
-    console.time('casualties');
-    const pCasualties = casualties(playerArmy, pUnits);
-    const eCasualties = casualties(enemyArmy, eUnits);
-    console.timeEnd('casualties');
-
-    const winner = eUnits.length > 0 ? 'enemy' : pUnits.length > 0 ? 'player' : 'draw';
-    return {
-        winner: winner,
-        playerCasualties: pCasualties,
-        enemyCasualties: eCasualties,
-    }
 }

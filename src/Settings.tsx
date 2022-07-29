@@ -14,11 +14,6 @@ function defaultSettings(): Settings {
     }
 }
 
-function saveSettings(settings: Settings) {
-    const j = JSON.stringify(settings)
-    localStorage.setItem('settings', j);
-}
-
 export function useSettings(): [Settings, (settings: Settings) => void] {
     const [settings, setSettings] = useState<Settings>(() => {
         const j = localStorage.getItem('settings');

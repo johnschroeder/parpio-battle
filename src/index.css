@@ -184,3 +184,29 @@ input[type=number] {
   padding: 1em;
   margin: 1em;
 }
+
+.battleLog img {
+  max-height: 2em;
+}
+
+table.battleLog {
+  margin: auto;
+  border-collapse: collapse;
+}
+
+.battleLog td {
+  border: 1px solid;
+}
+
+.battleLogUnitList {
+  display: flex;
+  margin: .25em;
+}
+
+.battleLogUnitCount {
+  display: flex;
+}
+
+.battleLogUnitCount+.battleLogUnitCount {
+  margin-left: .5em;
+}
