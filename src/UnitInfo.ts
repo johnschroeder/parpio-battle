@@ -1,13 +1,18 @@
 import React from 'react';
 import ArcherIcon from './assets/png/Archer.png'
-import CannonneerIcon from './assets/png/Cannonneer.png'
+import CannoneerIcon from './assets/png/Cannoneer.png'
 import CavalryIcon from './assets/png/Cavalry.png'
-import Crossbow_archerIcon from './assets/png/Crossbow_archer.png'
+import CrossbowArcherIcon from './assets/png/CrossbowArcher.png'
 import CuirassierIcon from './assets/png/Cuirassier.png'
+import FootsoldierIcon from './assets/png/Footsoldier.png'
 import KnightIcon from './assets/png/Knight.png'
-import Longbow_archerIcon from './assets/png/Longbow_archer.png'
+import LongbowArcherIcon from './assets/png/LongbowArcher.png'
 import MilitiaIcon from './assets/png/Militia.png'
 import OrcArcherIcon from './assets/png/OrcArcher.png'
+import OrcBoss1Icon from './assets/png/OrcBoss1.png'
+import OrcBoss2Icon from './assets/png/OrcBoss2.png'
+import OrcBoss3Icon from './assets/png/OrcBoss3.png'
+import OrcBoss4Icon from './assets/png/OrcBoss4.png'
 import OrcCannoneerIcon from './assets/png/OrcCannoneer.png'
 import OrcCavalryIcon from './assets/png/OrcCavalry.png'
 import OrcCrossbowArcherIcon from './assets/png/OrcCrossbowArcher.png'
@@ -15,12 +20,8 @@ import OrcCuirassierIcon from './assets/png/OrcCuirassier.png'
 import OrcFootsoldierIcon from './assets/png/OrcFootsoldier.png'
 import OrcKnightIcon from './assets/png/OrcKnight.png'
 import OrcLongbowArcherIcon from './assets/png/OrcLongbowArcher.png'
-import Orc_boss_1Icon from './assets/png/Orc_boss_1.png'
-import Orc_boss_2Icon from './assets/png/Orc_boss_2.png'
-import Orc_boss_3Icon from './assets/png/Orc_boss_3.png'
-import Orc_boss_4Icon from './assets/png/Orc_boss_4.png'
 import OrclingIcon from './assets/png/Orcling.png'
-import RecruitIcon from './assets/png/Recruit.png'
+
 
 export type UnitName = string
 
@@ -92,7 +93,7 @@ export const unitInfos: UnitInfo[] = [
         order: 1,
         tier: 1,
         skills: skills(),
-        icon: RecruitIcon,
+        icon: FootsoldierIcon,
     },
     {
         name: "Longbow Archer",
@@ -103,7 +104,7 @@ export const unitInfos: UnitInfo[] = [
         order: 6,
         tier: 2,
         skills: skills({ ranged: true, doubleStrike: true }),
-        icon: Longbow_archerIcon,
+        icon: LongbowArcherIcon,
     },
     {
         name: "Knight",
@@ -125,7 +126,7 @@ export const unitInfos: UnitInfo[] = [
         order: 7,
         tier: 3,
         skills: skills({ ranged: true }),
-        icon: Crossbow_archerIcon,
+        icon: CrossbowArcherIcon,
     },
     {
         name: "Cavalry",
@@ -158,7 +159,7 @@ export const unitInfos: UnitInfo[] = [
         order: 8,
         tier: 4,
         skills: skills({ trample: true, lastStrike: true, ranged: true, flanking: true }),
-        icon: CannonneerIcon,
+        icon: CannoneerIcon,
     },
     {
         name: "Orkling",
@@ -268,7 +269,7 @@ export const unitInfos: UnitInfo[] = [
         order: 100,
         tier: 100,
         skills: skills({ trample: true, lastStrike: true }),
-        icon: Orc_boss_1Icon,
+        icon: OrcBoss1Icon,
     },
     {
         name: "Aguk (boss 2)",
@@ -279,7 +280,7 @@ export const unitInfos: UnitInfo[] = [
         order: 100,
         tier: 150,
         skills: skills({ trample: true, lastStrike: true }),
-        icon: Orc_boss_2Icon,
+        icon: OrcBoss2Icon,
     },
     {
         name: "Mazoga (boss 3)",
@@ -290,7 +291,7 @@ export const unitInfos: UnitInfo[] = [
         order: 3.5,
         tier: 200,
         skills: skills({ trample: true, lastStrike: true }),
-        icon: Orc_boss_3Icon,
+        icon: OrcBoss3Icon,
     },
     {
         name: "Durgash (boss 4)",
@@ -301,7 +302,7 @@ export const unitInfos: UnitInfo[] = [
         order: 100,
         tier: 300,
         skills: skills({ trample: true, firstStrike: true }),
-        icon: Orc_boss_4Icon,
+        icon: OrcBoss4Icon,
     },
 ];
 
