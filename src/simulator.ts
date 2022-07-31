@@ -205,12 +205,15 @@ function thirdPhase(u: Unit): boolean {
 
 const phases = [firstPhase, secondPhase, thirdPhase];
 
-function fightPhase(pUnits: Unit[], eUnits: Unit[], filter: (u: Unit) => boolean): [Unit[], Unit[]] {
-    attack(pUnits.filter(filter), eUnits);
-    attack(eUnits.filter(filter), pUnits);
+function fightPhase(pUnits: Unit[], eUnits: Unit[], filter: (u: Unit) => boolean): [Unit[], Unit[], boolean] {
+    const fpUnits = pUnits.filter(filter);
+    const feUnits = eUnits.filter(filter);
+
+    attack(fpUnits, eUnits)
+    attack(feUnits, pUnits)
     pUnits = removeDead(pUnits);
     eUnits = removeDead(eUnits);
-    return [pUnits, eUnits];
+    return [pUnits, eUnits, fpUnits.length !== 0 || feUnits.length !== 0];
 }
 
 function casualties(army: Army, remainingUnits: UnitInfo[]): UnitCount[] {
@@ -270,8 +273,9 @@ function oneBattle(playerArmy: Army, enemyArmy: Army, recordLog: boolean = false
     outer:
     while (true) {
         for (let phaseNumber = 0; phaseNumber < phases.length; phaseNumber++) {
-            [pUnits, eUnits] = fightPhase(pUnits, eUnits, phases[phaseNumber]);
-            if (battleLog) {
+            let anyFought = false;
+            [pUnits, eUnits, anyFought] = fightPhase(pUnits, eUnits, phases[phaseNumber]);
+            if (battleLog && anyFought) {
                 addToLog(battleLog, `Round ${roundNumber} ${['first strike', 'normal', 'last strike'][phaseNumber]}`, pUnits, eUnits);
             }
             if (pUnits.length === 0 || eUnits.length === 0) break outer;
