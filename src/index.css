@@ -16,6 +16,7 @@ h1 {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
+  align-content: start;
   justify-content: center;
   border: 2px solid saddlebrown;
   background-color: #fff;
