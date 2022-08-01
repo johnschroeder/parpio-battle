@@ -1,9 +1,10 @@
 import { Army, Unit } from "./Army"
-import { UnitInfo, unitInfos, UnitName, UnitSkills } from "./UnitInfo"
+import { isBoss, UnitInfo, unitInfoByName, unitInfos, UnitName, UnitSkills } from "./UnitInfo"
 
 export type UnitCount = {
     type: UnitName
     count: number
+    remainingHp?: number
 }
 export type BattleLogEntry = {
     stageName: string
@@ -108,7 +109,6 @@ function updateCasualtyStats(casualtyStats: CasualtyStats, casualties: UnitCount
 }
 
 function updateStats(stats: SimStats, br: BattleResult): boolean {
-    debugger;
     stats.roundCount++;
     if (br.winner === 'player' || br.winner === 'draw') stats.winCount++;
     if (br.winner === 'draw') stats.drawCount++;
@@ -151,11 +151,11 @@ export async function runSim(playerArmy: Army, enemyArmy: Army, setResults: (res
 
 function findTarget(units: Unit[], skills: UnitSkills): Unit | undefined {
     if (!skills.flanking) {
-        return units.find(u => u.maxHp > 0);
+        return units.find(u => u.hp > 0);
     }
     let weakest: UnitInfo | undefined = undefined;
     units.forEach(u => {
-        if (u.maxHp <= 0) {
+        if (u.hp <= 0) {
             return;
         }
         if (!weakest || u.maxHp < weakest.maxHp) {
@@ -169,12 +169,12 @@ function damage(defenders: Unit[], damage: number, skills: UnitSkills) {
     do {
         let t = findTarget(defenders, skills);
         if (!t) break;
-        if (damage < t.maxHp) {
-            t.maxHp -= damage;
+        if (damage < t.hp) {
+            t.hp -= damage;
             damage = 0;
         } else {
-            damage -= t.maxHp;
-            t.maxHp = 0;
+            damage -= t.hp;
+            t.hp = 0;
         }
     } while (damage > 0 && skills.trample);
 }
@@ -188,7 +188,7 @@ function attack(attackers: Unit[], defenders: Unit[]) {
 }
 
 function removeDead(units: Unit[]): Unit[] {
-    return units.filter(u => u.maxHp > 0);
+    return units.filter(u => u.hp > 0);
 }
 
 function firstPhase(u: Unit): boolean {
@@ -240,13 +240,14 @@ function casualties(army: Army, remainingUnits: UnitInfo[]): UnitCount[] {
 }
 
 function unitCounts(units: Unit[]): UnitCount[] {
-    let counts = new Map<UnitName, number>();
+    let counts = new Map<UnitName, { hp: number, count: number }>();
     units.forEach(u => {
-        counts.set(u.name, (counts.get(u.name) ?? 0) + 1);
+        const { hp, count } = counts.get(u.name) ?? { hp: 0, count: 0 };
+        counts.set(u.name, { hp: hp + u.hp, count: count + 1 });
     })
     let result: UnitCount[] = [];
     counts.forEach((c, n) => {
-        result.push({ type: n, count: c });
+        result.push({ type: n, count: c.count, remainingHp: c.hp });
     })
     return result;
 }

@@ -206,8 +206,17 @@ table.battleLog {
 
 .battleLogUnitCount {
   display: flex;
+  flex-direction: column;
 }
 
 .battleLogUnitCount+.battleLogUnitCount {
   margin-left: .5em;
+}
+
+.battleLogImageAndCount {
+  display: flex;
+}
+
+.bossHp {
+  font-size: xx-small;
 }

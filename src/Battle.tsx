@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Army } from './Army';
 import { BattleLogEntry, BattleResults, CasualtyStats, runSim } from './simulator';
-import { unitInfoByName } from './UnitInfo';
+import { isBoss, unitInfoByName } from './UnitInfo';
 
 type BattleProps = {
     playerArmy: Army
@@ -60,6 +60,13 @@ function Losses(props: { desc: string, casualties: CasualtyStats, roundCount: nu
     </figure>
 }
 
+function formatHp(hp: number): string {
+    if (hp > 1000) {
+        return (hp / 1000) + 'k';
+    }
+    return hp + '';
+}
+
 function BattleLogDisplay(props: { log: BattleLogEntry[] }) {
     if (!props.log) {
         return null;
@@ -75,11 +82,23 @@ function BattleLogDisplay(props: { log: BattleLogEntry[] }) {
             <tbody>
                 {props.log.map(entry => <tr key={entry.stageName}>
                     <td>{entry.stageName}</td>
-                    <td><div className="battleLogUnitList">{entry.enemyRemaining.map(uc =>
-                        <div key={uc.type} className="battleLogUnitCount"><img src={unitInfoByName(uc.type).icon} />{uc.count}</div>
-                    )}</div></td>
+                    <td><div className="battleLogUnitList">{entry.enemyRemaining.map(uc => {
+                        const unitInfo = unitInfoByName(uc.type);
+                        return <div key={uc.type} className="battleLogUnit">
+                            <div className="battleLogImageAndCount"><img src={unitInfoByName(uc.type).icon} />{uc.count}</div>
+                            {isBoss(unitInfo) && uc.remainingHp !== undefined &&
+                                <div className="bossHp">
+                                    {formatHp(uc.remainingHp)}/{formatHp(unitInfo.maxHp)}
+                                </div>
+                            }
+                        </div>
+                    })}</div></td>
                     <td><div className="battleLogUnitList">{entry.playerRemaining.map(uc =>
-                        <div key={uc.type} className="battleLogUnitCount"><img src={unitInfoByName(uc.type).icon} />{uc.count}</div>
+                        <div key={uc.type} className="battleLogUnit">
+                            <div className="battleLogImageAndCount">
+                                <img src={unitInfoByName(uc.type).icon} />{uc.count}
+                            </div>
+                        </div>
                     )}</div></td>
                 </tr>)}
             </tbody>
