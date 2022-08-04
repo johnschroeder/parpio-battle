@@ -1,5 +1,5 @@
 import { Army, Unit } from "./Army"
-import { isBoss, UnitInfo, unitInfoByName, unitInfos, UnitName, UnitSkills } from "./UnitInfo"
+import { UnitInfo, unitInfos, UnitName, UnitSkills } from "./UnitInfo"
 
 export type UnitCount = {
     type: UnitName

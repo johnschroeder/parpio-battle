@@ -52,7 +52,7 @@ function Losses(props: { desc: string, casualties: CasualtyStats, roundCount: nu
         <>
             {types.map(t =>
                 <li key={t}>
-                    <img src={unitInfoByName(t).icon} />: {decimal((cs.total.get(t) ?? 0) / cs.roundCount)}
+                    <img alt={t} src={unitInfoByName(t).icon} />: {decimal((cs.total.get(t) ?? 0) / cs.roundCount)}
                     {cs.min.get(t) !== cs.max.get(t) && <> ({cs.min.get(t) ?? 0} - {cs.max.get(t) ?? 0})</>}
                 </li>
             )}
@@ -85,7 +85,9 @@ function BattleLogDisplay(props: { log: BattleLogEntry[] }) {
                     <td><div className="battleLogUnitList">{entry.enemyRemaining.map(uc => {
                         const unitInfo = unitInfoByName(uc.type);
                         return <div key={uc.type} className="battleLogUnit">
-                            <div className="battleLogImageAndCount"><img src={unitInfoByName(uc.type).icon} />{uc.count}</div>
+                            <div className="battleLogImageAndCount">
+                                <img alt={uc.type} src={unitInfoByName(uc.type).icon} />{uc.count}
+                            </div>
                             {isBoss(unitInfo) && uc.remainingHp !== undefined &&
                                 <div className="bossHp">
                                     {formatHp(uc.remainingHp)}/{formatHp(unitInfo.maxHp)}
@@ -96,7 +98,7 @@ function BattleLogDisplay(props: { log: BattleLogEntry[] }) {
                     <td><div className="battleLogUnitList">{entry.playerRemaining.map(uc =>
                         <div key={uc.type} className="battleLogUnit">
                             <div className="battleLogImageAndCount">
-                                <img src={unitInfoByName(uc.type).icon} />{uc.count}
+                                <img alt={uc.type} src={unitInfoByName(uc.type).icon} />{uc.count}
                             </div>
                         </div>
                     )}</div></td>

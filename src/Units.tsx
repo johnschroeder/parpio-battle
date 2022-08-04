@@ -1,7 +1,7 @@
 import React from 'react';
 import { Army } from './Army';
 import { UnitInput } from './Unit';
-import { isBoss, UnitInfo, unitInfos } from './UnitInfo';
+import { isBoss, UnitInfo, unitInfos, validForIslandSize } from './UnitInfo';
 
 type UnitListProps = {
     unitInfos: UnitInfo[]
@@ -31,10 +31,17 @@ function UnitList(props: UnitListProps) {
 type UnitsProps = {
     enemyArmy: Army
     playerArmy: Army
+    islandSize: number | undefined
 }
 export function Units(props: UnitsProps) {
+    function enemyFilter(u: UnitInfo): boolean {
+        if (u.friendly) return false;
+        if (props.islandSize && !validForIslandSize(u, props.islandSize)) return false;
+        return true;
+    }
+
     return <div className="town">
-        <UnitList unitInfos={unitInfos.filter(u => !u.friendly)}
+        <UnitList unitInfos={unitInfos.filter(enemyFilter)}
             army={props.enemyArmy}
             isPlayer={false}
             title="Enemy Units" />

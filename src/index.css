@@ -220,3 +220,19 @@ table.battleLog {
 .bossHp {
   font-size: xx-small;
 }
+
+.settingsTextInput {
+  width: 60px;
+  height: 25px;
+  line-height: 30px;
+  border-radius: 0.25em;
+  border: 0px;
+  color: #fff;
+  text-align: center;
+  background: saddlebrown;
+  margin: 0.25em 1em 0em 0.25em;
+  font-family: 'Sriracha', cursive;
+  font-size: 1em;
+  font-weight: bold;
+  accent-color: saddlebrown;
+}

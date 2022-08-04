@@ -1,4 +1,3 @@
-import React from 'react';
 import ArcherIcon from './assets/png/Archer.png'
 import CannoneerIcon from './assets/png/Cannoneer.png'
 import CavalryIcon from './assets/png/Cavalry.png'
@@ -44,6 +43,8 @@ export type UnitInfo = {
     tier: number,
     skills: UnitSkills,
     icon: string,
+    minIslandSize?: number,
+    maxIslandSize?: number,
 }
 
 export function isBoss(u: UnitInfo): boolean {
@@ -171,6 +172,8 @@ export const unitInfos: UnitInfo[] = [
         tier: 1,
         skills: skills(),
         icon: OrclingIcon,
+        minIslandSize: 12,
+        maxIslandSize: 14,
     },
     {
         name: "Orc Hunter",
@@ -182,6 +185,8 @@ export const unitInfos: UnitInfo[] = [
         tier: 1,
         skills: skills({ ranged: true }),
         icon: OrcArcherIcon,
+        minIslandSize: 12,
+        maxIslandSize: 20,
     },
     {
         name: "Orc Raiders",
@@ -193,6 +198,8 @@ export const unitInfos: UnitInfo[] = [
         tier: 1,
         skills: skills(),
         icon: OrcFootsoldierIcon,
+        minIslandSize: 12,
+        maxIslandSize: 20,
     },
     {
         name: "Elite Orc Hunters",
@@ -204,6 +211,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 2,
         skills: skills({ ranged: true, doubleStrike: true }),
         icon: OrcLongbowArcherIcon,
+        minIslandSize: 16,
     },
     {
         name: "Orc Veteran",
@@ -215,6 +223,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 3,
         skills: skills(),
         icon: OrcKnightIcon,
+        minIslandSize: 20,
     },
     {
         name: "Elite Orc Sniper",
@@ -226,6 +235,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 3,
         skills: skills({ ranged: true }),
         icon: OrcCrossbowArcherIcon,
+        minIslandSize: 20,
     },
     {
         name: "Warg Rider",
@@ -237,6 +247,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 2,
         skills: skills({ flanking: true, firstStrike: true }),
         icon: OrcCavalryIcon,
+        minIslandSize: 14,
     },
     {
         name: "Orc Vanguard",
@@ -248,6 +259,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 4,
         skills: skills({ firstStrike: true }),
         icon: OrcCuirassierIcon,
+        minIslandSize: 24,
     },
     {
         name: "Orc Demolisher",
@@ -259,6 +271,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 4,
         skills: skills({ ranged: true, trample: true, flanking: true, lastStrike: true }),
         icon: OrcCannoneerIcon,
+        minIslandSize: 24,
     },
     {
         name: "Bula (boss 1)",
@@ -270,6 +283,8 @@ export const unitInfos: UnitInfo[] = [
         tier: 100,
         skills: skills({ trample: true, lastStrike: true }),
         icon: OrcBoss1Icon,
+        minIslandSize: 12,
+        maxIslandSize: 18,
     },
     {
         name: "Aguk (boss 2)",
@@ -281,6 +296,8 @@ export const unitInfos: UnitInfo[] = [
         tier: 150,
         skills: skills({ trample: true, lastStrike: true }),
         icon: OrcBoss2Icon,
+        minIslandSize: 16,
+        maxIslandSize: 22,
     },
     {
         name: "Mazoga (boss 3)",
@@ -292,6 +309,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 200,
         skills: skills({ trample: true, lastStrike: true }),
         icon: OrcBoss3Icon,
+        minIslandSize: 20,
     },
     {
         name: "Durgash (boss 4)",
@@ -303,6 +321,7 @@ export const unitInfos: UnitInfo[] = [
         tier: 300,
         skills: skills({ trample: true, firstStrike: true }),
         icon: OrcBoss4Icon,
+        minIslandSize: 20,
     },
 ];
 
@@ -316,4 +335,11 @@ var unitInfosByName: Map<string, UnitInfo> = (() => {
 
 export function unitInfoByName(name: string): UnitInfo {
     return unitInfosByName.get(name)!;
+}
+
+export function validForIslandSize(ui: UnitInfo, islandSize: number): boolean {
+    if (islandSize < 12) return true;
+    if (ui.minIslandSize && ui.minIslandSize > islandSize) return false;
+    if (ui.maxIslandSize && ui.maxIslandSize < islandSize) return false;
+    return true;
 }
