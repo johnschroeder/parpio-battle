@@ -58,6 +58,6 @@ export function SettingsConfig(props: { settings: Settings, setSettings: (settin
     return <div className="settings">
         <div><input type="checkbox" checked={props.settings.berserkCustodian} onClick={update(() => ({ berserkCustodian: !props.settings.berserkCustodian }))} />Custodian: Berserk</div>
         <div><input type="checkbox" checked={props.settings.generalCustodian} onClick={update(() => ({ generalCustodian: !props.settings.generalCustodian }))} />Custodian: General</div>
-        <div><input type="text" className="settingsTextInput" value={props.settings.islandSize ?? ""} onChange={islandSizeOnChange} onClick={(e) => e.currentTarget.select()} />Island Size</div>
+        <div><input type="text" className="settingsTextInput" inputMode="numeric" value={props.settings.islandSize ?? ""} onChange={islandSizeOnChange} onClick={(e) => e.currentTarget.select()} />Island Size</div>
     </div>
 }
